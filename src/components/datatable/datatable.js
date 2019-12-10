@@ -68,7 +68,7 @@ export class DataTable extends React.Component {
                         data={data}
                         columns={columns}
                         formatters={formatters}
-                        selected={this.selected}
+                        selected={this.state.selected}
                         handleSelectionChange={this.toggleSelection}
                         handleShowDetails={this.showUserDetailsHandler}
                         handleDeleteItem={item => this.deleteItems([item])}
