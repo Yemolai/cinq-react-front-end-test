@@ -1,1 +1,2 @@
-export * from './datatable'
+export * from './DataTable'
+export * from './DataTableHeader'

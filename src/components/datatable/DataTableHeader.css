@@ -1,0 +1,19 @@
+.datatable-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.datatable-header > .column {
+    margin: 0.25em;
+}
+
+.datatable-header > .wrapper {
+    padding: 0.2em;
+}
+
+.datatable-header > .filter > input {
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.4);
+}

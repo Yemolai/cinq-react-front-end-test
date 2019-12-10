@@ -1,18 +1,39 @@
 import React from 'react'
+import { throwException } from '../../utils/throwException'
+import { DataTableHeader } from './DataTableHeader'
+import { Table } from './Table'
+import { CardGrid } from './CardGrid'
 
 const passthrough = v => `${v}`
 
 export class DataTable extends React.Component {
     state = {
+        filter: null,
         selected: []
     }
 
-    isSelected (item) {
+    isSelected = item => {
         return !!this.state.selected.find(selectedItem => selectedItem === item)
     }
 
-    toggleSelection (item) {
-        if (this.isSelected(item)) {
+    updateFilter = filter => {
+        this.setState({ filter })
+    }
+
+    showUserDetailsHandler = item => {
+        const missingHandler = () => throwException(new Error('no handle show details provided'))
+        const { handleShowDetails = missingHandler } = this.props
+        handleShowDetails(item)
+    }
+
+    deleteItems = items => {
+        const { handleDelete = throwException(new Error('no delete handler was provided')) } = this.props
+        handleDelete(items)
+    }
+
+    toggleSelection = item => {
+        const selected = this.isSelected(item)
+        if (selected) {
             const selected = this.state.selected.filter(selectedItem => selectedItem !== item)
             this.setState({ selected })
         } else {
@@ -22,45 +43,47 @@ export class DataTable extends React.Component {
     }
 
     render () {
-        const { data, columns } = this.props
+        const {
+            data,
+            columns,
+            showCards = false,
+            downloadDataHandler
+        } = this.props
 
         const formatters = columns.reduce((map, column) => {
             const { name, format: formatter = passthrough } = column
             return ({...map, [name]: formatter })
         }, {})
 
-        const tableHeaders = columns.map(column => (<th>{`${column.label}`.toUpperCase()}</th>))
-
-        const tableBody = data.map(item => {
-            const row = Object.keys(item)
-                .map(columnName => {
-                    const format = formatters[columnName]
-                    const rawData = item[columnName]
-                    return (<td>{format(rawData)}</td>)
-                })
-            const isSelected = this.isSelected(item)
-            const checkboxAction = () => this.toggleSelection(item)
-            const selectionCheckbox = <input type="checkbox" checked={isSelected} onClick={checkboxAction} />
-            return (
-                <tr>
-                    {selectionCheckbox}
-                    {row}
-                </tr>
-            )
-        })
-        const selectionCount = this.state.selected.length
-        const selectionHeader = selectionCount < 1
-            ? `Selection`
-            : `${selectionCount} selected`
-        const table = (
-            <table>
-                <thead>
-                    <th>{selectionHeader}</th>
-                    {tableHeaders}
-                </thead>
-                <tbody>{tableBody}</tbody>
-            </table>
+        
+        return (
+            <div>
+                <DataTableHeader
+                    filterChangeHandler={this.updateFilter}
+                    deleteSelectedHandler={() => this.deleteItems(this.selected)}
+                    downloadDataHandler={downloadDataHandler}
+                />
+                {showCards
+                    ? <CardGrid
+                        data={data}
+                        columns={columns}
+                        formatters={formatters}
+                        selected={this.selected}
+                        handleSelectionChange={this.toggleSelection}
+                        handleShowDetails={this.showUserDetailsHandler}
+                        handleDeleteItem={item => this.deleteItems([item])}
+                    />
+                    : <Table
+                        data={data}
+                        columns={columns}
+                        formatters={formatters}
+                        selected={this.state.selected}
+                        handleSelectionChange={this.toggleSelection}
+                        handleShowDetails={this.showUserDetailsHandler}
+                        handleDeleteItem={item => this.deleteItems([item])}
+                    />
+                }
+            </div>
         )
-        return table
     }
 }

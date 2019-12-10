@@ -1,0 +1,31 @@
+.card-grid {
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.card-grid > .card {
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin: 0.4em;
+    padding: 0.8em;
+    display: flex;
+    flex-direction: column;
+    max-width: 45em;
+}
+
+@media(max-width: 768px) {
+    .card-grid > .card {
+        min-width: 10rem;
+        max-width: 40vw;
+    }
+}
+
+.card-grid > .card > .actions {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
