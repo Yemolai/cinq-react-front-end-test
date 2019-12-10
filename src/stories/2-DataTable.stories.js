@@ -1,6 +1,5 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable/DataTable'
-import { CardGrid } from '../components/DataTable/CardGrid'
 
 export default {
     title: 'DataTable'
