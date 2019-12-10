@@ -34,11 +34,13 @@ describe('DataTableHeader Component', () => {
                 downloadDataHandler={onDownloadDataHandler}
             />
         )
-        const { getByText } = render(headerComponent, container)
+        const { getByText, getByPlaceholderText } = render(headerComponent, container)
         const deleteButtonElement = getByText(/Delete/i)
         const downloadButtonElement = getByText(/Download/i)
+        const filterField = getByPlaceholderText(/Filter/i)
         expect(deleteButtonElement).toBeInTheDocument()
         expect(downloadButtonElement).toBeInTheDocument()
+        expect(filterField).toBeInTheDocument()
     })
 
     it('should call attached callbacks', () => {
