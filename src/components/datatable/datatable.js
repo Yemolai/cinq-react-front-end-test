@@ -60,7 +60,7 @@ export class DataTable extends React.Component {
             <div>
                 <DataTableHeader
                     filterChangeHandler={this.updateFilter}
-                    deleteSelectedHandler={() => this.deleteItems(this.selected)}
+                    deleteSelectedHandler={() => this.deleteItems(this.state.selected)}
                     downloadDataHandler={downloadDataHandler}
                 />
                 {showCards
