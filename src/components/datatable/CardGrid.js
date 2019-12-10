@@ -7,7 +7,7 @@ export const CardGrid = (props) => {
         data = [],
         columns = [],
         formatters = {},
-        selected = [],
+        selected = throwException(new Error('no selected array given')),
         handleSelectionChange = throwException(new Error('no toggle selection handler provided')),
         handleShowDetails = throwException(new Error('no show details handler provided')),
         handleDeleteItem = throwException(new Error('no delete item handler provided'))
